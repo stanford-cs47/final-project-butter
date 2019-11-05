@@ -67,6 +67,7 @@ const TabNav = createBottomTabNavigator({
   initialRouteName: 'FeedScreen',
   tabBarOptions: {
     activeTintColor: Colors.black,
+    showLabel: true,
   },
 })
 
