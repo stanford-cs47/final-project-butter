@@ -12,7 +12,9 @@ const images = {
   truffles: require('../Images/truffles.png'),
   apple: require('../Images/apple.png'),
   granny_smith: require('../Images/granny-smith.png'),
-  apples: require('../Images/apples.png')
+  apples: require('../Images/apples.png'),
+  welcome: require('../Images/welcome.png'),
+  camera: require('../Images/camera.png')
 }
 
 export default images

@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image, ImageBackground} from 'react-native';
 import { material } from 'react-native-typography';
-import { Metrics } from '../Themes';
+import { Metrics } from '../../Themes';
 import { Entypo } from '@expo/vector-icons';
 import SafeAreaView from 'react-native-safe-area-view';
-import { Images } from '../Themes'
+import { Images } from '../../Themes'
 
-export default class HomeScreen extends React.Component {
+export default class BuyerHomeScreen extends React.Component {
 
   state = {
     bookmarked: [{title:'Blue Lane Farms', image:Images.bookmark1},
@@ -31,8 +31,6 @@ export default class HomeScreen extends React.Component {
     return { 
       headerTitle: (
         <View style={styles.header}>
-          <Entypo name="menu" color="black" size={Metrics.icons.small}
-          onPress={() => navigation.openDrawer()}/>
           <View style={{flexDirection:'row',
                         alignItems: 'center'}}>
             <Entypo style={{marginRight:5}} name="location-pin" color="black"/>
