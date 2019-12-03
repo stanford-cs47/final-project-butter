@@ -7,6 +7,7 @@ import SafeAreaView from 'react-native-safe-area-view';
 import { Images } from '../../Themes'
 import {AsyncStorage} from 'react-native';
 
+
 export default class BuyerHomeScreen extends React.Component {
 
   // state = {
@@ -77,7 +78,7 @@ export default class BuyerHomeScreen extends React.Component {
 
   renderBookmark = (index, item) => {
     return (
-      <TouchableOpacity onPress={() => {console.log('Opening bookmark');}}>
+      <TouchableOpacity onPress={() => this.props.navigation.navigate('SupplierProfile', {item:item})}>
         <View style={styles.category_panel}>
           <Image source={item.image}
                   style={{height:140,
@@ -145,11 +146,11 @@ export default class BuyerHomeScreen extends React.Component {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.bookmarked}>
-          <Text style={styles.section_title}>Your Bookmarked Suppliers</Text>
+          <Text style={styles.section_title}>Your Recommended Suppliers</Text>
           <FlatList
             data={this.state.bookmarked}
             // We encapsulated the code for renderItem into renderTodo.
-            renderItem={({ index, item }) => this.renderBookmark(index, item)}
+            renderItem={({ index, item }) => this.renderBookmark(index, item)} 
             keyExtractor={(item, index) => this.keyExtractor(item, index)}
             horizontal={true}
           />
