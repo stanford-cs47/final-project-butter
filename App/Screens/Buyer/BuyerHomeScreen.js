@@ -5,26 +5,50 @@ import { Metrics } from '../../Themes';
 import { Entypo } from '@expo/vector-icons';
 import SafeAreaView from 'react-native-safe-area-view';
 import { Images } from '../../Themes'
+import {AsyncStorage} from 'react-native';
 
 export default class BuyerHomeScreen extends React.Component {
 
+  // state = {
+  //   bookmarked: [{title:'Blue Lane Farms', image:Images.bookmark1},
+  //                {title:'January Farms', image:Images.bookmark2},
+  //                {title:'Aussie Farms', image:Images.bookmark3}],
+  //   categories: [{title:'Fruit', image:Images.fruit}, 
+  //                {title:'Vegetables', image:Images.vegetables}, 
+  //                {title:'Grains', image:Images.grains}],
+  //   deals: [{title:'WHITE TRUFFLES', 
+  //            description: '$4/lb',
+  //            image:Images.truffles}, 
+  //           {title:'PARMESAN',
+  //           description: '$3.30/lb',
+  //           image:Images.parmesan}, 
+  //           {title:'JUMBO SHISHITOS', 
+  //           description: '$4/lb',
+  //           image:Images.shishito}],
+  // }
+
   state = {
-    bookmarked: [{title:'Blue Lane Farms', image:Images.bookmark1},
-                 {title:'January Farms', image:Images.bookmark2},
-                 {title:'Aussie Farms', image:Images.bookmark3}],
-    categories: [{title:'Fruit', image:Images.fruit}, 
-                 {title:'Vegetables', image:Images.vegetables}, 
-                 {title:'Grains', image:Images.grains}],
-    deals: [{title:'WHITE TRUFFLES', 
-             description: '$4/lb',
-             image:Images.truffles}, 
-            {title:'PARMESAN',
-            description: '$3.30/lb',
-            image:Images.parmesan}, 
-            {title:'JUMBO SHISHITOS', 
-            description: '$4/lb',
-            image:Images.shishito}],
+    bookmarked: [],
+    categories: [],
+    deals: [],
   }
+
+  componentDidMount = () => {
+    AsyncStorage.getItem('bookmarked').then((value) => this.setState({ 'bookmarked': JSON.parse(value) }))
+    AsyncStorage.getItem('categories').then((value) => this.setState({ 'categories': JSON.parse(value) }))
+    AsyncStorage.getItem('deals').then((value) => this.setState({ 'deals': JSON.parse(value) }))
+    this.props.navigation.setParams({
+       addItem: this.addItem
+    });
+
+    // keyExtractor = index => {
+    //   console.log(this.state.categories);
+    //   return this.state.categories[index].title;
+    //   // return toString(index);
+    // }
+  }
+
+
   static navigationOptions = ({ navigation }) => {
     const params = navigation.state.params || {};
 
@@ -113,8 +137,8 @@ export default class BuyerHomeScreen extends React.Component {
     )
   }
 
-  keyExtractor = index => {
-    return this.state.categories[index].title;
+  keyExtractor = (item, index) => {
+    return item.title;
   }
 
   render() {
@@ -126,7 +150,7 @@ export default class BuyerHomeScreen extends React.Component {
             data={this.state.bookmarked}
             // We encapsulated the code for renderItem into renderTodo.
             renderItem={({ index, item }) => this.renderBookmark(index, item)}
-            keyExtractor={(item, index) => this.keyExtractor(index)}
+            keyExtractor={(item, index) => this.keyExtractor(item, index)}
             horizontal={true}
           />
         </View>
@@ -136,7 +160,7 @@ export default class BuyerHomeScreen extends React.Component {
             data={this.state.categories}
             // We encapsulated the code for renderItem into renderTodo.
             renderItem={({ index, item }) => this.renderCategory(index, item)}
-            keyExtractor={(item, index) => this.keyExtractor(index)}
+            keyExtractor={(item, index) => this.keyExtractor(item, index)}
             horizontal={true}
           />
 
@@ -147,7 +171,7 @@ export default class BuyerHomeScreen extends React.Component {
             data={this.state.deals}
             // We encapsulated the code for renderItem into renderTodo.
             renderItem={({ index, item }) => this.renderDeal(index, item)}
-            keyExtractor={(item, index) => this.keyExtractor(index)}
+            keyExtractor={(item, index) => this.keyExtractor(item, index)}
             horizontal={true}
           />
         </View>

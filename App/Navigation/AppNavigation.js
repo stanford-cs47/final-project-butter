@@ -13,6 +13,7 @@ import ProfileScreen from '../Screens/ProfileScreen'
 import BuyerHomeScreen from '../Screens/Buyer/BuyerHomeScreen'
 import SupplierHomeScreen from '../Screens/Supplier/SupplierHomeScreen'
 import EditItemScreen from '../Screens/Supplier/EditItemScreen'
+import CameraScreen from '../Screens/Supplier/CameraScreen'
 import MessagesScreen from '../Screens/MessagesScreen'
 import SingleChatScreen from '../Screens/SingleChatScreen'
 import NewMessageScreen from '../Screens/NewMessageScreen'
@@ -32,7 +33,8 @@ BuyerStackNav = createStackNavigator({
 
 SupplierStackNav = createStackNavigator({
   Home: { screen: SupplierHomeScreen },
-  EditItem: { screen: EditItemScreen }
+  EditItem: { screen: EditItemScreen },
+  Camera: { screen: CameraScreen }
   }, {
 	initialRouteName: 'Home'
   })

@@ -8,6 +8,7 @@ import Search from '../Components/Search'
 import { AntDesign } from '@expo/vector-icons';
 import SafeAreaView from 'react-native-safe-area-view';
 import Highlighter from 'react-native-highlight-words';
+import {AsyncStorage} from 'react-native';
 
 
 class SearchHeader extends React.Component {
@@ -26,29 +27,44 @@ class SearchHeader extends React.Component {
 
 export default class IngredientSearchScreen extends React.Component {
 
+    // state = {
+    //     default:true,
+    //     apples:[
+    //         {title:'Turkish Honeycrisp Apples', description:'$10/lb | Blue Lane Farms'},
+    //         {title:'Gala Valley Honeycrisp Apples', description:"$8/lb | Kauffmann's Fruit Farm"},
+    //         {title:"Honeycrisp Apples: Hidden Valley's Best", description:'$14/lb | Mendocino Farms'},
+    //         {title:'Hybrid Granny Smith-Honeycrisp Apples', description:'$12/lb | Happy Farms'},
+    //         {title:'Organic Honeycrisp Apples', description:'$18/lb | Apple Farms'},
+    //         {title:'Fresh Picked Honeycrisp Apples', description:'$10/lb | Aggy Farms'},
+    //         {title:'Jumbo Honeycrisp Apples', description:'$12/lb | Redhearts Farms'},
+    //     ],
+    //     recentSearches:[
+    //         {title:'honey'},
+    //         {title:'hass avocados'},
+    //         {title:'milk'},
+    //         {title:'broccoli'},
+    //         {title:'romaine lettuce'},
+    //         {title:'bell peppers'},
+    //     ]
+    // }
+
     state = {
-        default:true,
-        apples:[
-            {title:'Turkish Honeycrisp Apples', description:'$10/lb | Blue Lane Farms'},
-            {title:'Gala Valley Honeycrisp Apples', description:"$8/lb | Kauffmann's Fruit Farm"},
-            {title:"Honeycrisp Apples: Hidden Valley's Best", description:'$14/lb | Mendocino Farms'},
-            {title:'Hybrid Granny Smith-Honeycrisp Apples', description:'$12/lb | Happy Farms'},
-            {title:'Organic Honeycrisp Apples', description:'$18/lb | Apple Farms'},
-            {title:'Fresh Picked Honeycrisp Apples', description:'$10/lb | Aggy Farms'},
-            {title:'Jumbo Honeycrisp Apples', description:'$12/lb | Redhearts Farms'},
-        ],
-        recentSearches:[
-            {title:'honey'},
-            {title:'hass avocados'},
-            {title:'milk'},
-            {title:'broccoli'},
-            {title:'romaine lettuce'},
-            {title:'bell peppers'},
-        ]
+      default: true,
+      apples: [],
+      recentSearches: []
     }
 
-    keyExtractor = index => {
-        return this.state.apples[index].title;
+    componentDidMount = () => {
+      AsyncStorage.getItem('apples').then((value) => this.setState({ 'apples': JSON.parse(value) }))
+      AsyncStorage.getItem('recentSearches').then((value) => this.setState({ 'recentSearches': JSON.parse(value) }))
+      this.props.navigation.setParams({
+        searchForIngredient: this.searchForIngredient 
+      });
+    }
+
+    keyExtractor = (item, index) => {
+        // return this.state.apples[index].title;
+        return item.title;
     }
 
     goToIngredient = (ingredient) => {
@@ -110,12 +126,6 @@ export default class IngredientSearchScreen extends React.Component {
         };  
     };
 
-    componentDidMount() {
-        this.props.navigation.setParams({
-            searchForIngredient: this.searchForIngredient 
-        });
-    }
-
   render() {
 
     let contentDisplayed = null;
@@ -136,7 +146,7 @@ export default class IngredientSearchScreen extends React.Component {
                             data={this.state.recentSearches}
                             // We encapsulated the code for renderItem into renderTodo.
                             renderItem={({ index, item }) => this.renderRecentSearch(index, item)}
-                            keyExtractor={(item, index) => this.keyExtractor(index)}
+                            keyExtractor={(item, index) => this.keyExtractor(item, index)}
                             />
                         </View>
     } else {
@@ -145,7 +155,7 @@ export default class IngredientSearchScreen extends React.Component {
                             data={this.state.apples}
                             // We encapsulated the code for renderItem into renderTodo.
                             renderItem={({ index, item }) => this.renderSearchResult(index, item)}
-                            keyExtractor={(item, index) => this.keyExtractor(index)}
+                            keyExtractor={(item, index) => this.keyExtractor(item, index)}
                         />
     }
 

@@ -5,123 +5,155 @@ import { Metrics } from '../../Themes';
 import { Entypo } from '@expo/vector-icons';
 import SafeAreaView from 'react-native-safe-area-view';
 import { Images } from '../../Themes'
+import { withNavigation } from 'react-navigation';
+import {AsyncStorage} from 'react-native';
 
-export default class SupplierHomeScreen extends React.Component {
+class SupplierHomeScreen extends React.Component {
 
-  state = {
-    inventory: [
-       {item: 'Turkish Honeycrisp Apples', details: '112 lbs | $12/lb'},
-       {item: 'Juicy Red Strawberries', details: '1144 lbs | $11/lb'},
-       {item: 'Taylor Gold Pear', details: '65 lbs | $13/lb'},
-       {item: 'Romaine Lettuce', details: '440 lbs | $16/lb'},
-       {item: 'Corn', details: '4140 lbs | $11/lb'},
-       {item: 'Cherry Tomatoes', details: '40 lbs | $12/lb'},
-      ]
-  }
-   
-  static navigationOptions = ({ navigation }) => {
-    const params = navigation.state.params || {};
+   state = {
+      inventory: []
+   }
 
-    return { 
-      headerTitle: (
-        <View style={styles.header}>
-            <TouchableOpacity style={{width: 35,
-                                      height: 26,
-                                      backgroundColor: 'white',
-                                      borderRadius: 10,
-                                      flexDirection: 'row',
-                                      justifyContent: 'center',
-                                      alignItems: 'center'}}>
-                  <Text style={{
-                     color: 'white',
-                     fontFamily: 'Avenir',
-                     fontWeight: 'bold'
-                  }}>+</Text>
-            </TouchableOpacity>
-         
-            <Text style={{fontFamily:'Avenir',
-                          fontSize: 20,
-                          fontWeight: 'bold',
-                          }}>Inventory</Text>
-          
-          
-          <TouchableOpacity style={styles.getStarted} onPress={() => navigation.navigate('EditItem')}>
-                  <Text style={{
-                     color: 'white',
-                     fontFamily: 'Avenir',
-                     fontWeight: 'bold'
-                  }}>+</Text>
-          </TouchableOpacity>
-        </View>
+   componentDidMount = () => {
+      AsyncStorage.getItem('inventory').then((value) => this.setState({ 'inventory': JSON.parse(value) }))
+      this.props.navigation.setParams({
+         addItem: this.addItem
+      });
+   }
 
+   addItem = (item) => {
+      console.log("ADDING ITEM")
+      let inventoryCopy = this.state.inventory;
+      inventoryCopy.unshift(item);
+      this.setState({inventory:inventoryCopy});
+   }
 
-      ),
-      headerBackTitle: null,
-      headerStyle: {
-        borderBottomWidth: 0,
+   editItem = (index, item) => {
+      console.log("EDITING ITEM");
+
+      let oldItem = this.state.inventory[index];
+      for (var property in item) {
+         if (item[property] === undefined) {
+            item[property] = oldItem[property];
+         }
       }
-    };
-  };
+
+      // Remove item, then push new one to top
+      this.setState(state => {
+         const inventory = state.inventory.filter((item, j) => index !== j);
+         return {
+            inventory,
+         };
+      }, () => {
+         let inventory = [...this.state.inventory];
+         inventory.unshift(item);
+         this.setState({ inventory });
+      });
+   }
+
+   static navigationOptions = ({ navigation }) => {
+      const params = navigation.state.params || {};
+
+      return { 
+         headerTitle: (
+            <View style={styles.header}>
+               <TouchableOpacity style={{width: 35,
+                                          height: 26,
+                                          backgroundColor: 'white',
+                                          borderRadius: 10,
+                                          flexDirection: 'row',
+                                          justifyContent: 'center',
+                                          alignItems: 'center'}}>
+                     <Text style={{
+                        color: 'white',
+                        fontFamily: 'Avenir',
+                        fontWeight: 'bold'
+                     }}>+</Text>
+               </TouchableOpacity>
+            
+               <Text style={{fontFamily:'Avenir',
+                              fontSize: 20,
+                              fontWeight: 'bold',
+                              }}>Inventory</Text>
+               
+               
+               <TouchableOpacity style={styles.getStarted} onPress={() => navigation.navigate('EditItem', {mode:'new', item: null, addItem :params.addItem})}>
+                     <Text style={{
+                        color: 'white',
+                        fontFamily: 'Avenir',
+                        fontWeight: 'bold'
+                     }}>+</Text>
+               </TouchableOpacity>
+            </View>
+
+
+         ),
+         headerBackTitle: null,
+         headerStyle: {
+            borderBottomWidth: 0,
+         }
+      };
+   };
    
    renderItem= (index, item) => {
       return (
-         <View style={styles.itemPanel}>
+         <TouchableOpacity style={styles.itemPanel} onPress={() => this.props.navigation.navigate('EditItem', {mode:'edit', item: item, index: index, addItem: this.editItem})}>
             <Text style={{fontFamily:'Avenir',
                         fontWeight:'bold',
                         fontSize: 15,
-                        marginBottom: 3}}>{item.item}</Text>
+                        marginBottom: 3}}>{item.name}</Text>
             <Text style={{fontFamily:'Avenir',
                           fontSize: 14,
-                          color: '#656565'}}>{item.details}</Text>
-         </View>
+                          color: '#656565'}}>{item.quantity} lbs | ${item.price}/lb</Text>
+         </TouchableOpacity>
       )
    }
 
    keyExtractor = index => {
-      return this.state.inventory[index].item;
+      return this.state.inventory[index].name;
    }
 
 
-    render() {
-        return (
-            <SafeAreaView style={styles.container}>
-               <View style={styles.subheader}>
-                  <View style={{alignItems: 'center'}}> 
-                     <Text style={{fontFamily:'Avenir',
-                        fontWeight:'bold',
-                        fontSize: 20}}>$144,000</Text>
-                     <Text style={{fontFamily:'Avenir',
-                        fontSize: 12}}>Total Value</Text>
-                  </View>
-                  <View style={{alignItems: 'center'}}>
-                     <Text style={{fontFamily:'Avenir',
-                        fontWeight:'bold',
-                        fontSize: 20}}>20,000</Text>
-                     <Text style={{fontFamily:'Avenir',
-                        fontSize: 12}}>Items</Text>
-                  </View>
-               </View>
-               <View style={styles.filterBar}>
-                  <View style={{flexDirection:'row',}}>
-                     <Text style={{fontFamily:'Avenir', 
-                                    fontWeight:'bold',
-                                    marginRight:8,}}>Items</Text>
-                     <Text style={{fontFamily:'Avenir',
-                                    color:'gray'}}>Categories</Text>
-                  </View>
+   render() {
+      return (
+         <SafeAreaView style={styles.container}>
+            <View style={styles.subheader}>
+               <View style={{alignItems: 'center'}}> 
                   <Text style={{fontFamily:'Avenir',
-                                 color:'gray'}}>Filter   +</Text>
+                     fontWeight:'bold',
+                     fontSize: 20}}>$144,000</Text>
+                  <Text style={{fontFamily:'Avenir',
+                     fontSize: 12}}>Total Value</Text>
                </View>
-               <FlatList
-                  data={this.state.inventory}
-                  // We encapsulated the code for renderItem into renderTodo.
-                  renderItem={({ index, item }) => this.renderItem(index, item)}
-                  keyExtractor={(item, index) => this.keyExtractor(index)}
-               />
-            </SafeAreaView>
-        );
-        }
-    }
+               <View style={{alignItems: 'center'}}>
+                  <Text style={{fontFamily:'Avenir',
+                     fontWeight:'bold',
+                     fontSize: 20}}>20,000</Text>
+                  <Text style={{fontFamily:'Avenir',
+                     fontSize: 12}}>Items</Text>
+               </View>
+            </View>
+            <View style={styles.filterBar}>
+               <View style={{flexDirection:'row',}}>
+                  <Text style={{fontFamily:'Avenir', 
+                                 fontWeight:'bold',
+                                 marginRight:8,}}>Items</Text>
+                  <Text style={{fontFamily:'Avenir',
+                                 color:'gray'}}>Categories</Text>
+               </View>
+               <Text style={{fontFamily:'Avenir',
+                              color:'gray'}}>Filter   +</Text>
+            </View>
+            <FlatList
+               data={this.state.inventory}
+               // We encapsulated the code for renderItem into renderTodo.
+               renderItem={({ index, item }) => this.renderItem(index, item)}
+               keyExtractor={(item, index) => this.keyExtractor(index)}
+            />
+         </SafeAreaView>
+      );
+      }
+   }
 
 const styles = StyleSheet.create({
   container: {
@@ -173,3 +205,5 @@ const styles = StyleSheet.create({
       borderColor: '#e7e7d1',
    },
 });
+
+export default withNavigation(SupplierHomeScreen);

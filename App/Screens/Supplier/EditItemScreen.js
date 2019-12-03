@@ -6,24 +6,64 @@ import { Entypo } from '@expo/vector-icons';
 import SafeAreaView from 'react-native-safe-area-view';
 import { Images } from '../../Themes'
 import { TextInput } from 'react-native-gesture-handler';
+import { withNavigation } from 'react-navigation';
 
-export default class EditItemScreen extends React.Component {
+class EditItemScreen extends React.Component {
 
-  state = {
-    inventory: [
-       {item: 'Turkish Honeycrisp Apples', details: '112 lbs | $12/lb'},
-       {item: 'Juicy Red Strawberries', details: '1144 lbs | $11/lb'},
-       {item: 'Taylor Gold Pear', details: '65 lbs | $13/lb'},
-       {item: 'Romaine Lettuce', details: '440 lbs | $16/lb'},
-       {item: 'Corn', details: '4140 lbs | $11/lb'},
-       {item: 'Cherry Tomatoes', details: '40 lbs | $12/lb'},
-      ]
-  }
+   constructor(props) {
+      super(props);
+      if (props.navigation.state.params.mode == 'edit') {
+         let item = props.navigation.state.params.item;
+         this.state = {
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity
+         };
+      } else {
+         this.state = {
+            name: '',
+            price: '',
+            quantity: ''
+         }
+      }
+   }
 
+   updateParam = (param, val) => {
+      this.props.navigation.state.params[param] = val;
+      
+      if (param=='name') {
+         this.setState({name:val});
+      } else if (param=='price') {
+         this.setState({price:val});
+      } else if (param=='quantity') {
+         this.setState({quantity:val});
+      }
+   }
    
    static navigationOptions = ({ navigation }) => {
       const params = navigation.state.params || {};
 
+      addItemAndReturn = () => {
+         let newItem = {
+            name: params.name,
+            price: params.price,
+            quantity: params.quantity
+         }
+         
+         navigation.goBack();
+
+         if (params.mode == "edit") {
+            params.addItem(params.index, newItem);
+         } else {
+            params.addItem(newItem);
+         }
+      }
+
+      if (params['mode'] == 'new') {
+         var titleMode = 'New';
+      } else {
+         var titleMode = 'Edit';
+      }
       return {
          headerLeft: (
          <TouchableOpacity style={{marginLeft: 20}} onPress={() => navigation.goBack()}>
@@ -35,29 +75,15 @@ export default class EditItemScreen extends React.Component {
          ),
          headerTitle: (
          <View style={styles.header}>
-               {/* <TouchableOpacity style={{width: 35,
-                                          height: 26,
-                                          backgroundColor: 'white',
-                                          borderRadius: 10,
-                                          flexDirection: 'row',
-                                          justifyContent: 'center',
-                                          alignItems: 'center'}}>
-                     <Text style={{
-                           color: 'white',
-                           fontFamily: 'Avenir',
-                           fontWeight: 'bold'
-                     }}>+</Text>
-               </TouchableOpacity>
-                */}
                <Text style={{fontFamily:'Avenir',
                               fontSize: 20,
                               fontWeight: 'bold',
-                              }}>Edit Item</Text>
+                              }}>{titleMode} Item</Text>
                
          </View>
          ),
          headerRight: (
-         <TouchableOpacity style={{marginRight: 20}} onPress={() => navigation.goBack()}>
+         <TouchableOpacity style={{marginRight: 20}} onPress={addItemAndReturn}>
             <Text style={{fontFamily:'Avenir',
                            fontSize: 18,
                            color: '#FFB100',
@@ -73,9 +99,10 @@ export default class EditItemScreen extends React.Component {
    };
 
    render() {
+
       return (
          <SafeAreaView style={styles.container}>
-            <View style={{
+            <TouchableOpacity style={{
                borderWidth:1,
                borderColor: '#707070',
                borderRadius: 82,
@@ -84,11 +111,12 @@ export default class EditItemScreen extends React.Component {
                marginBottom: 24,
                justifyContent: 'center',
                alignItems: 'center'
-            }}>
+            }}
+            >
                <Image source={Images.camera} style={{resizeMode:'contain',
                                                      height: 81,
                                                      width: 81}}/>
-            </View >
+            </TouchableOpacity >
             <View style={{
                borderWidth:1,
                borderColor: '#707070',
@@ -97,7 +125,7 @@ export default class EditItemScreen extends React.Component {
                height: 50,
                marginBottom: 24,
             }}>
-               <TextInput style={{paddingTop:15, paddingLeft:10}} placeholder="Name"></TextInput>
+               <TextInput style={{paddingTop:15, paddingLeft:10}} placeholder="Name" value={this.state.name} onChangeText={text => this.updateParam('name', text)}></TextInput>
             </View>
             <View style={{
                borderWidth:1,
@@ -107,7 +135,7 @@ export default class EditItemScreen extends React.Component {
                height: 50,
                marginBottom: 24,
             }}>
-               <TextInput style={{paddingTop:15, paddingLeft:10}} placeholder="Category"></TextInput>
+               <TextInput style={{paddingTop:15, paddingLeft:10}} placeholder="Category" onChangeText={text => this.updateParam('category', text)}></TextInput>
             </View>
             <View style={{
                flexDirection: 'row',
@@ -122,14 +150,14 @@ export default class EditItemScreen extends React.Component {
                   borderColor: '#707070',
                   borderRadius: 30,
                   width: '45%',
-               }} placeholder="Price"></TextInput>
+               }} placeholder="Price (/lb)" value={this.state.price} onChangeText={text => this.updateParam('price', text)}></TextInput>
                <TextInput style={{
                   paddingLeft:10,
                   borderWidth:1,
                   borderColor: '#707070',
                   borderRadius: 30,
                   width: '45%',
-               }} placeholder="Quantity"></TextInput>
+               }} placeholder="Quantity (lb)" value={this.state.quantity} onChangeText={text => this.updateParam('quantity', text)}></TextInput>
             </View>
             <View style={{
                borderWidth:1,
@@ -138,7 +166,7 @@ export default class EditItemScreen extends React.Component {
                width: '90%',
                height: 324,
             }}>
-               <TextInput style={{paddingTop:10, paddingLeft:10}} placeholder="Description"></TextInput>
+               <TextInput style={{paddingTop:10, paddingLeft:10}} placeholder="Description" onChangeText={text => this.updateParam('description', text)}></TextInput>
             </View>
          </SafeAreaView>
       );
@@ -164,3 +192,5 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
 });
+
+export default withNavigation(EditItemScreen);
