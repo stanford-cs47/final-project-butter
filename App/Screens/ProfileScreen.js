@@ -1,15 +1,19 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import * as React from 'react';
+import { StyleSheet, Text, View, TouchableHighlight, Image} from 'react-native';
 import { material } from 'react-native-typography';
 import { Metrics } from '../Themes';
 import { Entypo } from '@expo/vector-icons';
 import Feed from '../Components/Feed'
 import SafeAreaView from 'react-native-safe-area-view';
+import { Images } from '../Themes'
+import { TextInput } from 'react-native-gesture-handler';
 
-export default class MessagesScreen extends React.Component {
+export default class ProfileScreen extends React.Component {
 
   static navigationOptions = ({ navigation }) => {
-    const params = navigation.state.params || {};
+    state = {
+      text: 'hello'
+    };
 
     return { 
       headerTitle: (
@@ -21,37 +25,79 @@ export default class MessagesScreen extends React.Component {
     };
   };
 
-  // onProfileRequested = (username) => {
-  //   console.log("Requested: " + username);
-
-  //   /* PART 1: you will want to call the navigate function here */
-  //   /* this function will be inside of this.props.navigation */
-  //   /* think of destructing the function "navigate" from inside of your navigation props*/
-
-  //   /* We can only call the navigate function from here because AppNavigation only explicitly defines this as a screen (under the stack that you created). */
-  //   /* The Feed.js and FeedItem.js are invisible to the app's navigation, therefore they cannot be used to navigate. We must pass everything back to here. */
-
-  //   /* PART 2: Navigate to your UserProfileScreen.js file */
-  //   /* Go to AppNavigation.js and see how you declared your UserProfileScreen, then navigate to it by passing it */
-  //   /* as the first parameter of the navigate function */
-
-  //   /* PART 3: pass the username on this function as a parameter to the navigate function, below is a prototype*/
-  //   //navigate('UserProfileScreen' /* make sure name matches what is inside of AppNavigation*/, { username: username });
-  // }
-
   render() {
     return (
-      <View style={styles.container}>
-        <SafeAreaView>
-          <Text>Profile Screen</Text>
-        </SafeAreaView>
-      </View>
+      <SafeAreaView style={styles.container}>
+          <View style = {{ flexDirection: 'column',
+                                justifyContent: 'center',
+                                alignItems: 'center', 
+                                }}>
+                <Text style={{fontFamily:'Avenir',
+                                fontSize: 22,
+                                fontWeight: 'bold',
+                                color: 'black',
+                                marginTop: 20,
+                                marginBottom: 6,
+                                }}>My Profile</Text>
+                <Text style={{fontFamily:'Avenir',
+                            fontSize: 18,
+                            color: '#707070',
+                            fontWeight: 'normal',
+                            textAlign:'center'
+                            }}>Your name and avatar will be visible to suppliers you have contacted.</Text>
+                <Image source={Images.birddog}
+                  style={styles.profileImg}
+                  />
+            </View>
+            <View style={styles.form}>
+                  <Text style = {styles.labels}>Name</Text>
+                  <TextInput style={styles.formField}>Bird Dog Palo Alto</TextInput>
+                  <Text style = {styles.labels}>Location</Text>
+                  <TextInput style={styles.formField}>420 Ramona St, Palo Alto, CA</TextInput>
+                  <Text style = {styles.labels}>E-mail</Text>
+                  <TextInput style={styles.formField}>sourcing@birddog.com</TextInput>
+                  <Text style = {styles.labels}>Phone</Text>
+                  <TextInput style={styles.formField}>650-123-4567</TextInput>
+                  <Text style = {styles.labels}>Password</Text>
+                  <TextInput style={styles.formField} secureTextEntry={true}>password</TextInput>
+                  <Text style = {styles.labels}>Search Radius</Text>
+                  <TextInput style={styles.formField}>10 miles</TextInput>
+            </View>
+      </SafeAreaView>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
+   container: {
     flex: 1,
+    flexDirection: 'column',
+    justifyContent: "flex-start",
+    marginLeft: 40,
+    marginRight: 40,
   },
+  profileImg: {
+    height: 120,
+    width: 120,
+    borderRadius: 60,
+    marginTop:20,
+  },
+  form: {
+    marginTop: 20,
+    marginBottom: 40,
+    width: '95%'
+   },
+  formField: {
+    borderTopWidth: 1,
+    borderColor: '#d3d3d3',
+    width: 320,
+    height: 40,
+    marginBottom: 20
+   },
+   labels: {
+    fontSize: 15,
+    fontFamily: "Avenir",
+    fontWeight: "bold"
+   }
+
 });
