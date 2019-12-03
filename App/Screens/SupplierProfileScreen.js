@@ -11,8 +11,8 @@ import { TextInput } from 'react-native-gesture-handler';
 export default class SupplierProfileScreen extends React.Component {
   state = {
       categories: [{title:'Gala Apples', image:Images.apples}, 
-              {title:'Senegal Mangos', image:Images.vegetables}, 
-              {title:'Rasberries', image:Images.grains}],
+              {title:'Senegal Mangos', image:Images.mangos}, 
+              {title:'Raspberries', image:Images.raspberries}],
     };
 
   static navigationOptions = ({ navigation }) => {};
@@ -31,7 +31,12 @@ export default class SupplierProfileScreen extends React.Component {
                          borderWidth: 0.5
                 }}
           />
-          <Text style={{fontSize: 16, fontFamily: 'Avenir'}}>{item.title}</Text>
+          <Text style={{fontSize: 16, 
+                        fontFamily: 'Avenir',
+                        alignItems: 'center',
+                        textAlign: 'center'
+                      }}>
+          {item.title}</Text>
         </View>
       </TouchableOpacity>
     )
