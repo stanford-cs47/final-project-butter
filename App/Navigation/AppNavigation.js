@@ -19,6 +19,7 @@ import SingleChatScreen from '../Screens/SingleChatScreen'
 import NewMessageScreen from '../Screens/NewMessageScreen'
 import IngredientSearchScreen from '../Screens/IngredientSearchScreen'
 import IngredientSearchResultScreen from '../Screens/IngredientSearchResultScreen'
+import SupplierProfileScreen from '../Screens/SupplierProfileScreen'
 
 /* PART 1: Create a StackNavigator that contains the HomeScreen, and the UserProfileScreen */
 /* initialRouteName should be your HomeScreen. Set headerMode to 'float'  */
@@ -26,7 +27,8 @@ import IngredientSearchResultScreen from '../Screens/IngredientSearchResultScree
 BuyerStackNav = createStackNavigator({
   Home: { screen: BuyerHomeScreen },
   IngredientSearch: { screen: IngredientSearchScreen },
-  IngredientSearchResult: { screen: IngredientSearchResultScreen}
+  IngredientSearchResult: { screen: IngredientSearchResultScreen},
+  SupplierProfile: { screen: SupplierProfileScreen}
 }, {
   initialRouteName: 'Home'
 })
@@ -183,6 +185,7 @@ const BuyerNav = createBottomTabNavigator({
             tabBarLabel: 'HOME',
             tabBarIcon: ({ tintColor }) => (
               <Entypo name="home" size={20} color={tintColor}/>
+
             )
           }},
 	Profile: { screen: ProfileScreen,
