@@ -41,11 +41,6 @@ export default class BuyerHomeScreen extends React.Component {
        addItem: this.addItem
     });
 
-    // keyExtractor = index => {
-    //   console.log(this.state.categories);
-    //   return this.state.categories[index].title;
-    //   // return toString(index);
-    // }
   }
 
 
