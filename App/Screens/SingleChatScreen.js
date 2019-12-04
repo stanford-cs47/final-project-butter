@@ -119,7 +119,10 @@ class SingleChatScreen extends React.Component {
   onSend(messages = []) {
     this.setState(previousState => ({
       messages: GiftedChat.append(previousState.messages, messages),
-    }))
+    }));
+    console.log(messages[0].text);
+    let name = this.props.navigation.state.params.name;
+    this.props.navigation.state.params.updateCaption(messages[0].text, name);
   }
 
   render() {

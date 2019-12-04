@@ -56,5 +56,4 @@ AsyncStorage.setItem('deals', JSON.stringify(deals));
 AsyncStorage.setItem('apples', JSON.stringify(apples));
 AsyncStorage.setItem('recentSearches', JSON.stringify(recentSearches));
 
-
 export default AppNavigation;

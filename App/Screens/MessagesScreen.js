@@ -20,6 +20,10 @@ class MessagesScreen extends React.Component {
       ]
    }
 
+   componentDidMount() {
+      console.log("Mounted")
+   }
+
    renderItem= (index, item) => {
 
       if (item.status == 'unread') {
@@ -46,14 +50,26 @@ class MessagesScreen extends React.Component {
                               marginBottom: 3}}>{item.org}</Text>
       }
 
+      updateCaption = (newCaption, name) => {
+         let newChats = [...this.state.chats];
+         let index = newChats.findIndex((elem) => elem.name == name);
+         newChats[index]['caption'] = newCaption;
+         this.setState({chats:newChats});
+      }
+
       goToChat = () => {
-         let currentChatState = this.state.chats[index];
-         currentChatState['status'] = 'read';
-         console.log(currentChatState)
-         let chats = this.state.chats;
-         chats[index] = currentChatState;
-         this.setState({'chats':chats});
-         this.props.navigation.navigate('SingleChat', {'name':item.name, 'org':item.org});
+         // let currentChatState = this.state.chats[index];
+         // currentChatState['status'] = 'read';
+         // console.log(currentChatState)
+         // let chats = this.state.chats;
+         // chats[index] = currentChatState;
+         // this.setState({'chats':chats});
+         // console.log(this.state);
+
+         let newChats = [...this.state.chats];
+         newChats[index]['status'] = 'read';
+         this.setState({chats:newChats});
+         this.props.navigation.navigate('SingleChat', {'name':item.name, 'org':item.org, updateCaption:updateCaption});
       }
 
 
