@@ -52,19 +52,16 @@ class IngredientSearchResultScreen extends React.Component {
     if (ingredient.title == "Gala Valley Honeycrisp Apples") {
       var farm = "Kauffman's Fruit Farm";
       var imageSource = Images.apple;
-      var distance = "2.4 miles away"
       var bio = "Fresh new-crop honeycrisp apples from the Gala Valley! You’ll love the light, crunchy texture and sweet flavor of this variety. Honeycrisp is also a fine baking apple.";
       var seeMore = "See more from Kauffman's Fruit Farm.";
     } else if (ingredient.title == "Organic Honeycrisp Apples") {
       var farm = "Apple Farms";
       var imageSource = Images.apples;
-      var distance = "12.5 miles away"
       var bio = "As the name of the variety implies, this is one of the sweetest tasting apples in the marketplace today. The Honeycrisp™ tends to be quite large with light red striping over a gold background.";
       var seeMore = "See more from Apple Farms.";
     } else {
       var farm = "Hybrid Granny Smith-Honeycrisp Apples";
       var imageSource = Images.granny_smith;
-      var distance = "8.1 miles away"
       var bio = "The Apple of the Future in our opinion; Honeycrisp is an “explosively crisp” apple, one that people say, “WOW” over!";
       var seeMore = "See more from Happy Farms.";
     }
@@ -87,9 +84,6 @@ class IngredientSearchResultScreen extends React.Component {
                           fontSize: 18,
                           paddingBottom: 5,
                           color: 'gray'}}>{ingredient.description}</Text>
-            <Text style={{fontFamily:'Avenir',
-                          fontSize: 18,
-                          color: 'gray'}}>{distance}</Text>
           {/* </View> */}
           {/* <View> */}
             <Text style={{fontFamily:'Avenir',

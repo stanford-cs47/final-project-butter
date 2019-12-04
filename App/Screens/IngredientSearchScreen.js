@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity} from 'react-native';
+import { StyleSheet, Modal, Text, View, FlatList, TouchableOpacity, TouchableHighlight} from 'react-native';
 import { material } from 'react-native-typography';
 import { Metrics } from '../Themes';
 import { Entypo } from '@expo/vector-icons';
@@ -20,7 +20,7 @@ class SearchHeader extends React.Component {
     render() {
       return (
         <Search searchText = {this.state.searchText}
-                    searchForArticles = {this.props.navigation.getParam('searchForIngredient')}/>
+          searchForArticles = {this.props.navigation.getParam('searchForIngredient')}/>
       );
     }
 }
@@ -51,7 +51,12 @@ export default class IngredientSearchScreen extends React.Component {
     state = {
       default: true,
       apples: [],
-      recentSearches: []
+      recentSearches: [],
+      modalVisible: false
+    }
+
+    setModalVisible(visible) {
+      this.setState({modalVisible: visible});
     }
 
     componentDidMount = () => {
@@ -129,54 +134,86 @@ export default class IngredientSearchScreen extends React.Component {
   render() {
 
     let contentDisplayed = null;
+
+    let filterModal = 
+      (<View
+        style = {{
+            height: 60%
+        }}
+        >
+        <TouchableOpacity onPress={() => this.setModalVisible(true)}>
+                  <Text style={{fontFamily:'Avenir',
+                            color:'gray'}}>Filter   +</Text>
+        </TouchableOpacity>
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={this.state.modalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+          }}>
+            <View style = {{marginTop: 50,
+                           marginLeft: 50
+                          }}>
+              <TouchableOpacity onPress={() => this.setModalVisible(false)}>
+                <Text>X</Text>
+              </TouchableOpacity>
+            </View>
+        </Modal>
+      </View>);
     
     if (this.state.default) {
-      contentDisplayed = <View>
-                            <View>
-                                <Text style={{fontFamily:'Avenir',
-                                          color:'gray',
-                                          fontSize: 15,
-                                          paddingTop:10,
-                                          marginLeft: 20,
-                                          }}>Recent Searches</Text>
-                            </View>
-                            <FlatList
-                            style={{marginTop:10,
-                                    height:'100%'}}
-                            data={this.state.recentSearches}
-                            // We encapsulated the code for renderItem into renderTodo.
-                            renderItem={({ index, item }) => this.renderRecentSearch(index, item)}
-                            keyExtractor={(item, index) => this.keyExtractor(item, index)}
-                            />
-                        </View>
-    } else {
-      contentDisplayed = <FlatList
-                            style={{marginTop:10}}
-                            data={this.state.apples}
-                            // We encapsulated the code for renderItem into renderTodo.
-                            renderItem={({ index, item }) => this.renderSearchResult(index, item)}
-                            keyExtractor={(item, index) => this.keyExtractor(item, index)}
-                        />
-    }
-
-    return (
-        <SafeAreaView style={styles.container}>
+      return (
+      <SafeAreaView style={styles.container}>
           <View style={styles.filterBar}>
               <View style={{flexDirection:'row',}}>
                 <Text style={{fontFamily:'Avenir', 
                               fontWeight:'bold',
                               marginRight:8,}}>Ingredients</Text>
-                <Text style={{fontFamily:'Avenir',
-                              color:'gray'}}>Suppliers</Text>
-              </View>
-              <Text style={{fontFamily:'Avenir',
-                            color:'gray'}}>Filter   +</Text>
-          </View>
 
-          {contentDisplayed}
-          
+              </View>
+          </View>
+              <View>
+                  <Text style={{fontFamily:'Avenir',
+                            color:'gray',
+                            fontSize: 15,
+                            paddingTop:10,
+                            marginLeft: 20,
+                            }}>Recent Searches</Text>
+              </View>
+              <FlatList
+                style={{marginTop:10,
+                        height:'100%'}}
+                data={this.state.recentSearches}
+                // We encapsulated the code for renderItem into renderTodo.
+                renderItem={({ index, item }) => this.renderRecentSearch(index, item)}
+                keyExtractor={(item, index) => this.keyExtractor(item, index)}
+              />
+
         </SafeAreaView>
-    );
+        );
+    } else {
+      return (
+      <SafeAreaView style={styles.container}>
+          <View style={styles.filterBar}>
+              <View style={{flexDirection:'row',}}>
+                <Text style={{fontFamily:'Avenir', 
+                              fontWeight:'bold',
+                              marginRight:8,}}>Ingredients</Text>
+              </View>
+              {filterModal}
+                 
+          </View>
+          <FlatList
+              style={{marginTop:10}}
+              data={this.state.apples}
+              // We encapsulated the code for renderItem into renderTodo.
+              renderItem={({ index, item }) => this.renderSearchResult(index, item)}
+              keyExtractor={(item, index) => this.keyExtractor(item, index)}
+          />          
+        </SafeAreaView>
+        );
+    }
   }
 }
 
@@ -211,5 +248,8 @@ const styles = StyleSheet.create({
       borderBottomWidth: 6,
       borderBottomColor: '#f2f2f2',
     //   paddingBottom: 10,
-  }
+  },
+  // modal: {
+  //   height: 60%,
+  // },
 });
