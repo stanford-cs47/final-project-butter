@@ -15,7 +15,15 @@ export default class SupplierProfileScreen extends React.Component {
               {title:'Raspberries', image:Images.raspberries}],
     };
 
-  static navigationOptions = ({ navigation }) => {};
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerStyle: {
+        marginLeft: 10,
+        borderBottomWidth: 0,
+      },
+      headerTintColor: 'grey',
+    }
+  };
 
 
   renderCategory= (item) => {
@@ -68,6 +76,8 @@ export default class SupplierProfileScreen extends React.Component {
           <View style = {{ flexDirection: 'column',
                                 justifyContent: 'center',
                                 alignItems: 'center', 
+                                marginLeft: 40,
+                                marginRight: 40
                                 }}>
                 <Image source={imageSource}
                   style={styles.profileImg}
@@ -136,8 +146,9 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: "flex-start",
-    marginLeft: 40,
-    marginRight: 40,
+    // marginLeft: 40,
+    // marginRight: 40,
+    marginBottom: 20,
   },
   profileImg: {
     height: 230,
@@ -149,7 +160,9 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-evenly',
-    marginRight:5,
+    // marginRight:5,
+    marginLeft: 20,
+    marginRight: 20
    },
   section_title: {
     textAlign: 'left',

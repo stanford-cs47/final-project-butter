@@ -111,11 +111,12 @@ class EditItemScreen extends React.Component {
                marginBottom: 24,
                justifyContent: 'center',
                alignItems: 'center'
-            }}
+            }} onPress={() => {this.props.navigation.navigate('Camera')}}
             >
                <Image source={Images.camera} style={{resizeMode:'contain',
                                                      height: 81,
-                                                     width: 81}}/>
+                                                     width: 81}}
+                                             />
             </TouchableOpacity >
             <View style={{
                borderWidth:1,

@@ -48,20 +48,31 @@ class IngredientSearchResultScreen extends React.Component {
 
     let ingredient = this.props.navigation.getParam('ingredient');
     // let image = 
-
-    if (ingredient.title == "Gala Valley Honeycrisp Apples") {
+    
+    if (ingredient.title == "WHITE TRUFFLES") {
+      var title = "White Truffles";
+      var farm = "Willow Farm";
+      var imageSource = Images.truffle_specific;
+      var distance = "2.4 miles away"
+      var bio = "Fragrant white truffles from Willow Farms, based in the Salinas Valley. A delicacy ingredient that will elevate the flavor of any dish.";
+      var seeMore = "See more from Willow Farms.";
+    }
+    else if (ingredient.title == "Gala Valley Honeycrisp Apples") {
+      var title = "Gala Valley Honeycrisp Apples";
       var farm = "Kauffman's Fruit Farm";
       var imageSource = Images.apple;
       var distance = "2.4 miles away"
       var bio = "Fresh new-crop honeycrisp apples from the Gala Valley! You’ll love the light, crunchy texture and sweet flavor of this variety. Honeycrisp is also a fine baking apple.";
       var seeMore = "See more from Kauffman's Fruit Farm.";
     } else if (ingredient.title == "Organic Honeycrisp Apples") {
+      var title = "Organic Honeycrisp Apples";
       var farm = "Apple Farms";
       var imageSource = Images.apples;
       var distance = "12.5 miles away"
       var bio = "As the name of the variety implies, this is one of the sweetest tasting apples in the marketplace today. The Honeycrisp™ tends to be quite large with light red striping over a gold background.";
       var seeMore = "See more from Apple Farms.";
     } else {
+      var title = "Hybrid Granny Smith-Honeycrisp Apples";
       var farm = "Hybrid Granny Smith-Honeycrisp Apples";
       var imageSource = Images.granny_smith;
       var distance = "8.1 miles away"
@@ -75,6 +86,7 @@ class IngredientSearchResultScreen extends React.Component {
             <Image source={imageSource}
                     style={{height:150,
                             width:150,
+                            paddingBottom: 10,
                             resizeMode:'stretch'
                   }}
                 />
@@ -82,7 +94,7 @@ class IngredientSearchResultScreen extends React.Component {
                           textAlign:'center',
                           fontSize:20,
                           paddingTop: 20,
-                          paddingBottom:10}}>{ingredient.title}</Text>
+                          paddingBottom:10}}>{title}</Text>
             <Text style={{fontFamily:'Avenir',
                           fontSize: 18,
                           paddingBottom: 5,
@@ -107,7 +119,7 @@ class IngredientSearchResultScreen extends React.Component {
                                 color: 'gray',
                                 marginTop:30,
                                 color: '#ff8d00'}}
-                searchWords={["Kauffman's Fruit Farm", "Apple Farms", "Happy Farms"]}
+                searchWords={["Kauffman's Fruit Farm", "Apple Farms", "Happy Farms", "Willow Farms"]}
                 textToHighlight={seeMore}
             />
           {/* </View> */}
