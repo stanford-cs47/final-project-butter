@@ -33,7 +33,7 @@ export default class SupplierProfileScreen extends React.Component {
           <Image source={item.image}
                  style={{height:140,
                          width:140,
-                         borderRadius: 20,
+                         borderRadius: 27,
                          resizeMode:'stretch',
                          borderColor: "#707070",
                          borderWidth: 0.5
