@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, Button, View, FlatList, TouchableOpacity, TouchableHighlight} from 'react-native';
 import { material } from 'react-native-typography';
 import { Metrics } from '../Themes';
 import { Entypo } from '@expo/vector-icons';
@@ -9,7 +9,7 @@ import { AntDesign } from '@expo/vector-icons';
 import SafeAreaView from 'react-native-safe-area-view';
 import Highlighter from 'react-native-highlight-words';
 import {AsyncStorage} from 'react-native';
-
+import { Overlay } from 'react-native-elements';
 
 class SearchHeader extends React.Component {
 
@@ -20,42 +20,58 @@ class SearchHeader extends React.Component {
     render() {
       return (
         <Search searchText = {this.state.searchText}
-                    searchForArticles = {this.props.navigation.getParam('searchForIngredient')}/>
+          searchForArticles = {this.props.navigation.getParam('searchForIngredient')}/>
       );
     }
 }
 
 export default class IngredientSearchScreen extends React.Component {
 
-    // state = {
-    //     default:true,
-    //     apples:[
-    //         {title:'Turkish Honeycrisp Apples', description:'$10/lb | Blue Lane Farms'},
-    //         {title:'Gala Valley Honeycrisp Apples', description:"$8/lb | Kauffmann's Fruit Farm"},
-    //         {title:"Honeycrisp Apples: Hidden Valley's Best", description:'$14/lb | Mendocino Farms'},
-    //         {title:'Hybrid Granny Smith-Honeycrisp Apples', description:'$12/lb | Happy Farms'},
-    //         {title:'Organic Honeycrisp Apples', description:'$18/lb | Apple Farms'},
-    //         {title:'Fresh Picked Honeycrisp Apples', description:'$10/lb | Aggy Farms'},
-    //         {title:'Jumbo Honeycrisp Apples', description:'$12/lb | Redhearts Farms'},
-    //     ],
-    //     recentSearches:[
-    //         {title:'honey'},
-    //         {title:'hass avocados'},
-    //         {title:'milk'},
-    //         {title:'broccoli'},
-    //         {title:'romaine lettuce'},
-    //         {title:'bell peppers'},
-    //     ]
-    // }
 
     state = {
       default: true,
       apples: [],
-      recentSearches: []
+      recentSearches: [],
+      overlayVisible: false,
+      isSortedByPrice: false,
+      isSortedByDistance: false,
+      isSortedByRecommended: true
+    }
+
+    sortByPrice(clicked) {
+      this.setState({isSortedByPrice: clicked});
+      if (clicked) {
+        AsyncStorage.getItem('price').then((value) => this.setState({ 'apples': JSON.parse(value)}))
+        this.setState({isSortedByRecommended: false});
+        this.setState({isSortedByDistance: false});
+      }
+    }
+
+    sortByDistance(clicked) {
+      this.setState({isSortedByDistance: clicked});
+      if (clicked) {
+        AsyncStorage.getItem('distance').then((value) => this.setState({ 'apples': JSON.parse(value)}))
+        this.setState({isSortedByRecommended: false});
+        this.setState({isSortedByPrice: false});
+      }
+    }
+
+    sortByRecommended(clicked) {
+      this.setState({isSortedByRecommended: clicked});
+      if (clicked) {
+        AsyncStorage.getItem('recommended').then((value) => this.setState({ 'apples': JSON.parse(value)}))
+        this.setState({isSortedByDistance: false});
+        this.setState({isSortedByPrice: false});
+      }
+    }
+
+
+    setOverlayVisible(visible) {
+      this.setState({overlayVisible: visible});
     }
 
     componentDidMount = () => {
-      AsyncStorage.getItem('apples').then((value) => this.setState({ 'apples': JSON.parse(value) }))
+      AsyncStorage.getItem('recommended').then((value) => this.setState({apples: JSON.parse(value)}))
       AsyncStorage.getItem('recentSearches').then((value) => this.setState({ 'recentSearches': JSON.parse(value) }))
       this.props.navigation.setParams({
         searchForIngredient: this.searchForIngredient 
@@ -129,54 +145,136 @@ export default class IngredientSearchScreen extends React.Component {
   render() {
 
     let contentDisplayed = null;
+
+    let overlayContent = 
+    <View>
+      <Text style={{fontFamily:'Avenir',
+            color:'black',
+            fontSize: 30,
+            textAlign: 'center'
+          }}>Sort By</Text>
+      <View style={styles.fixToText}>
+        <TouchableOpacity 
+        style=
+        {[this.state.isSortedByPrice ? 
+            styles.getStarted 
+            : styles.buttonStyleUnclicked]}
+        onPress={() => this.sortByPrice(!this.state.isSortedByPrice)}>
+          <Text 
+          style=
+           {[this.state.isSortedByPrice ? 
+            styles.buttonClickedText 
+            : styles.buttonUnclickedText]}
+          >Price</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity 
+        style=
+        {[this.state.isSortedByDistance ? 
+            styles.getStarted 
+            : styles.buttonStyleUnclicked]}
+        onPress={() => this.sortByDistance(!this.state.isSortedByDistance)}>
+          <Text
+          style=
+           {[this.state.isSortedByDistance ? 
+            styles.buttonClickedText 
+            : styles.buttonUnclickedText]}
+            >Distance</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity 
+        style=
+        {[this.state.isSortedByRecommended ? 
+            styles.getStarted 
+            : styles.buttonStyleUnclicked]}
+        onPress={() => this.sortByRecommended(!this.state.isSortedByRecommended)}>
+          <Text 
+          style=
+           {[this.state.isSortedByRecommended ? 
+            styles.buttonClickedText 
+            : styles.buttonUnclickedText]}
+            >Recommended</Text>
+        </TouchableOpacity>
+      </View>
+
+    </View>
+
+    let filterOverlay= 
+      (<View>
+        <TouchableOpacity onPress={() => this.setOverlayVisible(true)}>
+                  <Text style={{fontFamily:'Avenir',
+                            color:'gray'}}>Sort By</Text>
+        </TouchableOpacity>
+        <Overlay
+            isVisible={this.state.overlayVisible}
+            height="20%"
+            width="100%"
+            animationType="slide"
+            windowBackgroundColor="rgba(0,0,0,0.5)"
+            onBackdropPress={() => this.setOverlayVisible(false)}
+        >
+        <View>
+          <TouchableOpacity onPress={() => this.setOverlayVisible(false)}>
+            <Text style = {{fontSize: 20}}>X</Text>
+          </TouchableOpacity>
+          {overlayContent}
+        </View>
+        </Overlay>
+      </View>);
     
     if (this.state.default) {
-      contentDisplayed = <View>
-                            <View>
-                                <Text style={{fontFamily:'Avenir',
-                                          color:'gray',
-                                          fontSize: 15,
-                                          paddingTop:10,
-                                          marginLeft: 20,
-                                          }}>Recent Searches</Text>
-                            </View>
-                            <FlatList
-                            style={{marginTop:10,
-                                    height:'100%'}}
-                            data={this.state.recentSearches}
-                            // We encapsulated the code for renderItem into renderTodo.
-                            renderItem={({ index, item }) => this.renderRecentSearch(index, item)}
-                            keyExtractor={(item, index) => this.keyExtractor(item, index)}
-                            />
-                        </View>
-    } else {
-      contentDisplayed = <FlatList
-                            style={{marginTop:10}}
-                            data={this.state.apples}
-                            // We encapsulated the code for renderItem into renderTodo.
-                            renderItem={({ index, item }) => this.renderSearchResult(index, item)}
-                            keyExtractor={(item, index) => this.keyExtractor(item, index)}
-                        />
-    }
-
-    return (
-        <SafeAreaView style={styles.container}>
+      return (
+      <SafeAreaView style={styles.container}>
           <View style={styles.filterBar}>
               <View style={{flexDirection:'row',}}>
                 <Text style={{fontFamily:'Avenir', 
                               fontWeight:'bold',
                               marginRight:8,}}>Ingredients</Text>
-                <Text style={{fontFamily:'Avenir',
-                              color:'gray'}}>Suppliers</Text>
-              </View>
-              <Text style={{fontFamily:'Avenir',
-                            color:'gray'}}>Filter   +</Text>
-          </View>
 
-          {contentDisplayed}
-          
+              </View>
+          </View>
+              <View>
+                  <Text style={{fontFamily:'Avenir',
+                            color:'gray',
+                            fontSize: 15,
+                            paddingTop:10,
+                            marginLeft: 20,
+                            }}>Recent Searches</Text>
+              </View>
+              <FlatList
+                style={{marginTop:10,
+                        height:'100%'}}
+                data={this.state.recentSearches}
+                // We encapsulated the code for renderItem into renderTodo.
+                renderItem={({ index, item }) => this.renderRecentSearch(index, item)}
+                keyExtractor={(item, index) => this.keyExtractor(item, index)}
+              />
+
         </SafeAreaView>
-    );
+        );
+    } else {
+      return (
+      <SafeAreaView style={styles.container}>
+          <View style={styles.filterBar}>
+              <View style={{flexDirection:'row',}}>
+                <Text style={{fontFamily:'Avenir', 
+                              fontWeight:'bold',
+                              marginRight:8,}}>Ingredients</Text>
+              </View>
+              {filterOverlay}
+                 
+          </View>
+          <FlatList
+              style={{marginTop:10}}
+              data={this.state.apples}
+              extraData={this.state}
+              // We encapsulated the code for renderItem into renderTodo.
+              renderItem={({ index, item }) => this.renderSearchResult(index, item)}
+              keyExtractor={(item, index) => this.keyExtractor(item, index)}
+          />          
+        </SafeAreaView>
+        );
+    }
   }
 }
 
@@ -201,7 +299,6 @@ const styles = StyleSheet.create({
     borderColor: '#e7e7d1',
   },
   filterBar: {
-    //   flex:1,
       flexDirection:'row',
       justifyContent: 'space-between',
       height: 55,
@@ -210,6 +307,33 @@ const styles = StyleSheet.create({
       paddingRight:20,
       borderBottomWidth: 6,
       borderBottomColor: '#f2f2f2',
-    //   paddingBottom: 10,
-  }
+  },
+  fixToText: {
+    marginTop: 30,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around'
+  },
+  getStarted: {
+       width: "auto",
+       height: "auto",
+       backgroundColor: '#FFB100',
+       borderRadius: 20,
+       flexDirection: 'row',
+       justifyContent: 'center',
+       alignItems: 'center',
+       padding: 10
+   },
+   buttonClickedText: {
+     color: 'white',
+     fontFamily: 'Avenir',
+     fontWeight: 'bold',
+     fontSize: 15,
+   },
+   buttonUnclickedText: {
+     color: '#959595',
+     fontFamily: 'Avenir',
+     fontWeight: 'bold',
+     fontSize: 15,
+   }
 });
