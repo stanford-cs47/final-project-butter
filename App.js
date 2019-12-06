@@ -30,7 +30,7 @@ let deals = [{title:'WHITE TRUFFLES',
             description: '$4/lb',
             image:Images.shishito}]
 
-let apples = [
+let recommended = [
          {title:'Turkish Honeycrisp Apples', description:'$10/lb | Blue Lane Farms | 4.2 mi away'},
          {title:'Gala Valley Honeycrisp Apples', description:"$8/lb | Kauffmann's Fruit Farm | 2.4 mi away"},
          {title:"Honeycrisp Apples: Hidden Valley's Best", description:'$14/lb | Mendocino Farms | 12 mi away'},
@@ -39,6 +39,27 @@ let apples = [
          {title:'Fresh Picked Honeycrisp Apples', description:'$10/lb | Aggy Farms | 22.9 mi away'},
          {title:'Jumbo Honeycrisp Apples', description:'$12/lb | Redhearts Farms | 10.1 mi away'},
       ]
+
+let price = [
+         {title:'Gala Valley Honeycrisp Apples', description:"$8/lb | Kauffmann's Fruit Farm | 2.4 mi away"},
+         {title:'Turkish Honeycrisp Apples', description:'$10/lb | Blue Lane Farms | 4.2 mi away'},
+         {title:'Fresh Picked Honeycrisp Apples', description:'$10/lb | Aggy Farms | 22.9 mi away'},
+         {title:'Jumbo Honeycrisp Apples', description:'$12/lb | Redhearts Farms | 10.1 mi away'},
+         {title:'Hybrid Granny Smith-Honeycrisp Apples', description:'$12/lb | Happy Farms | 8.1 mi away'},
+         {title:"Honeycrisp Apples: Hidden Valley's Best", description:'$14/lb | Mendocino Farms | 12 mi away'},
+         {title:'Organic Honeycrisp Apples', description:'$18/lb | Apple Farms | 12.5 mi away'},
+      ]
+
+let distance = [
+         {title:'Gala Valley Honeycrisp Apples', description:"$8/lb | Kauffmann's Fruit Farm | 2.4 mi away"},
+         {title:'Turkish Honeycrisp Apples', description:'$10/lb | Blue Lane Farms | 4.2 mi away'},
+         {title:'Hybrid Granny Smith-Honeycrisp Apples', description:'$12/lb | Happy Farms | 8.1 mi away'},
+         {title:'Jumbo Honeycrisp Apples', description:'$12/lb | Redhearts Farms | 10.1 mi away'},
+         {title:"Honeycrisp Apples: Hidden Valley's Best", description:'$14/lb | Mendocino Farms | 12 mi away'},
+         {title:'Organic Honeycrisp Apples', description:'$18/lb | Apple Farms | 12.5 mi away'},
+         {title:'Fresh Picked Honeycrisp Apples', description:'$10/lb | Aggy Farms | 22.9 mi away'},
+      ]
+
 
 let recentSearches = [
    {title:'honey'},
@@ -53,7 +74,9 @@ AsyncStorage.setItem('inventory', JSON.stringify(inventory));
 AsyncStorage.setItem('bookmarked', JSON.stringify(bookmarked));
 AsyncStorage.setItem('categories', JSON.stringify(categories));
 AsyncStorage.setItem('deals', JSON.stringify(deals));
-AsyncStorage.setItem('apples', JSON.stringify(apples));
+AsyncStorage.setItem('recommended', JSON.stringify(recommended));
+AsyncStorage.setItem('price', JSON.stringify(price));
+AsyncStorage.setItem('distance', JSON.stringify(distance));
 AsyncStorage.setItem('recentSearches', JSON.stringify(recentSearches));
 
 export default AppNavigation;
