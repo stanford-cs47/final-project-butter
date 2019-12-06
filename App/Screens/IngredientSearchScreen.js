@@ -150,9 +150,10 @@ export default class IngredientSearchScreen extends React.Component {
     <View>
       <Text style={{fontFamily:'Avenir',
             color:'black',
-            fontSize: 30,
+            fontSize: 25,
+            marginTop: 10,
             textAlign: 'center'
-          }}>Sort By</Text>
+          }}>What's most important to you?</Text>
       <View style={styles.fixToText}>
         <TouchableOpacity 
         style=
@@ -215,7 +216,7 @@ export default class IngredientSearchScreen extends React.Component {
         >
         <View>
           <TouchableOpacity onPress={() => this.setOverlayVisible(false)}>
-            <Text style = {{fontSize: 20}}>X</Text>
+            <Text style = {{marginLeft: 5, fontSize: 20}}>x</Text>
           </TouchableOpacity>
           {overlayContent}
         </View>

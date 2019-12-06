@@ -9,7 +9,7 @@ const images = {
   bookmark3: require('../Images/bkmark3.png'),
   parmesan: require('../Images/parmesan.png'),
   shishito: require('../Images/shishito.png'),
-  truffles: require('../Images/truffles.png'),
+  truffles: require('../Images/truffle-home.png'),
   apple: require('../Images/apple.png'),
   granny_smith: require('../Images/granny-smith.png'),
   apples: require('../Images/apples.png'),
@@ -19,7 +19,9 @@ const images = {
   bluelaneFarms: require('../Images/BlueLaneFarms.png'),
   januaryFarms: require('../Images/JanuaryFarms.png'),
   raspberries: require('../Images/Raspberries05.png'),
-  mangos: require('../Images/mangos.png')
+  mangos: require('../Images/mangos.png'),
+  truffle_specific: require('../Images/truffles.png'),
+  camroll: require('../Images/camroll.png')
 }
 
 export default images

@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-   //  alignItems: 'center',
+    alignItems: 'center',
     justifyContent: "flex-start",
     marginLeft: 40,
     marginRight: 40

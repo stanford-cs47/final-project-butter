@@ -105,7 +105,7 @@ export default class BuyerHomeScreen extends React.Component {
 
   renderDeal= (index, item) => {
     return (
-      <TouchableOpacity onPress={() => {console.log('Opening deal');}}>
+      <TouchableOpacity onPress={() => this.props.navigation.navigate('IngredientSearchResult', {ingredient:item})}>
         <View style={styles.deal_panel}>
           <ImageBackground source={item.image}
                  style={{height:180,
@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    // justifyContent: 'space-evenly'
+    alignItems: 'center',
     marginLeft: 15,
     marginRight:15,
     marginBottom:20,
@@ -220,6 +220,7 @@ const styles = StyleSheet.create({
     // alignContent: 'stretch',
     alignItems: 'center',
     alignContent: 'center',
+    marginTop: 5,
     marginRight:5,
     width: 150
   },
