@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Demo",
-    "slug": "Lecture7A-Starter",
+    "name": "Butter Hi-Fi Demo",
+    "slug": "butter",
     "privacy": "public",
     "sdkVersion": "35.0.0",
     "platforms": [
