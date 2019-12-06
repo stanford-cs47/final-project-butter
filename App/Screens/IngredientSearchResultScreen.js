@@ -27,7 +27,7 @@ class IngredientSearchResultScreen extends React.Component {
       headerTitle: null,
       headerRight: () => (
         <View style= {styles.contact_button}>
-          <TouchableOpacity style={styles.contact_button} onPress={() => alert('Contacting them!')}>
+          <TouchableOpacity style={styles.contact_button} onPress={() => navigation.navigate('NewMessage')}>
             <Text style={{color:'white',
                           fontFamily:'Avenir',
                           fontSize:17,
