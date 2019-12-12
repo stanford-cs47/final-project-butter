@@ -59,7 +59,7 @@ export default class SupplierProfileScreen extends React.Component {
     if (supplier.title == "Blue Lane Farms") {
       var farm = "Blue Lane Farms";
       var imageSource = Images.bluelaneFarms;
-      var bio = "Located in the heart of Watsonville, we have been the East Bay’s go-to supplier for fresh fruit for over 50 years. Family run and owned, you can count on us to provide high quality, hard to find ingredients at an affordable price.";
+      var bio = "Located in the heart of Watsonville, we have been the East Bay’s go-to supplier for fresh fruit for over 50 years.";
       var address = "305 Mayfield Ave, Watsonville CA 94102";
       var numReviews = 139
     } else if (supplier.title == "January Farms") {

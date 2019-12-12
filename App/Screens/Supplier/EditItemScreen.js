@@ -167,7 +167,7 @@ class EditItemScreen extends React.Component {
                width: '90%',
                height: 324,
             }}>
-               <TextInput style={{paddingTop:10, paddingLeft:10}} placeholder="Description" onChangeText={text => this.updateParam('description', text)}></TextInput>
+               <TextInput style={{paddingTop:10, paddingLeft:10, height: 50}} placeholder="Description" onChangeText={text => this.updateParam('description', text)}></TextInput>
             </View>
          </SafeAreaView>
       );
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft: 15,
     marginRight:15,
-    marginBottom:20,
+    marginBottom:30,
     marginTop:20,
   },
   header: {

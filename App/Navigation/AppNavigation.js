@@ -28,7 +28,8 @@ BuyerStackNav = createStackNavigator({
   Home: { screen: BuyerHomeScreen },
   IngredientSearch: { screen: IngredientSearchScreen },
   IngredientSearchResult: { screen: IngredientSearchResultScreen},
-  SupplierProfile: { screen: SupplierProfileScreen}
+  SupplierProfile: { screen: SupplierProfileScreen},
+  NewMessage: { screen: NewMessageScreen }
 }, {
   initialRouteName: 'Home'
 })
